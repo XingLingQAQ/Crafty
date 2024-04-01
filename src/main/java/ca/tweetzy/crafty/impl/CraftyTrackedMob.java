@@ -1,28 +1,29 @@
 package ca.tweetzy.crafty.impl;
 
 import ca.tweetzy.crafty.Crafty;
-import ca.tweetzy.crafty.api.drop.Drop;
 import ca.tweetzy.crafty.api.drop.TrackedBlock;
+import ca.tweetzy.crafty.api.drop.TrackedMob;
 import ca.tweetzy.crafty.api.drop.TrackedOptions;
 import ca.tweetzy.crafty.api.sync.SynchronizeResult;
 import ca.tweetzy.flight.comp.enums.CompMaterial;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 @AllArgsConstructor
-public final class CraftyTrackedBlock implements TrackedBlock {
+public final class CraftyTrackedMob implements TrackedMob {
 
-	private final CompMaterial block;
+	private final EntityType mob;
 	private TrackedOptions options;
-	private List<BlockDrop> drops;
+	private List<MobDrop> drops;
 
 	@Override
-	public CompMaterial getBlock() {
-		return this.block;
+	public EntityType getEntity() {
+		return this.mob;
 	}
 
 	@Override
@@ -31,13 +32,13 @@ public final class CraftyTrackedBlock implements TrackedBlock {
 	}
 
 	@Override
-	public List<BlockDrop> getDrops() {
+	public List<MobDrop> getDrops() {
 		return this.drops;
 	}
 
 	@Override
-	public void store(@NonNull Consumer<TrackedBlock> stored) {
-		Crafty.getDataManager().insertTrackedBlock(this, (ex, result) -> {
+	public void store(@NonNull Consumer<TrackedMob> stored) {
+		Crafty.getDataManager().insertTrackedMob(this, (ex, result) -> {
 			if (ex == null) {
 				stored.accept(result);
 			}
@@ -46,9 +47,9 @@ public final class CraftyTrackedBlock implements TrackedBlock {
 
 	@Override
 	public void unStore(@Nullable Consumer<SynchronizeResult> syncResult) {
-		Crafty.getDataManager().deleteTrackedBlock(this, (error, updateStatus) -> {
+		Crafty.getDataManager().deleteTrackedMob(this, (error, updateStatus) -> {
 			if (updateStatus) {
-				Crafty.getBlockDropManager().remove(this.block);
+				Crafty.getMobDropManager().remove(this.mob);
 			}
 
 			if (syncResult != null)
@@ -59,7 +60,7 @@ public final class CraftyTrackedBlock implements TrackedBlock {
 
 	@Override
 	public void sync(@Nullable Consumer<SynchronizeResult> syncResult) {
-		Crafty.getDataManager().updateTrackedBlock(this, (error, updateStatus) -> {
+		Crafty.getDataManager().updateTrackedMob(this, (error, updateStatus) -> {
 			if (syncResult != null)
 				syncResult.accept(error == null ? updateStatus ? SynchronizeResult.SUCCESS : SynchronizeResult.FAILURE : SynchronizeResult.FAILURE);
 		});

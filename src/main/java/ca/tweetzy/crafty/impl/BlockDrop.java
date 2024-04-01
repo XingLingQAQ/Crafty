@@ -1,52 +1,41 @@
 package ca.tweetzy.crafty.impl;
 
 import ca.tweetzy.crafty.api.drop.Drop;
-import lombok.AllArgsConstructor;
+import ca.tweetzy.flight.comp.enums.CompMaterial;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
-@AllArgsConstructor
+@Getter
+@Setter
 public final class BlockDrop extends Drop {
 
-	private ItemStack item;
-	private double chance;
-	private List<String> commands;
-
-	@Getter
-	@Setter
+	private CompMaterial parentBlock;
 	private boolean dropOnNatural;
-
-	@Getter
-	@Setter
 	private boolean dropOnPlaced;
 
-	@Override
-	public ItemStack getItem() {
-		return this.item;
+	public BlockDrop(@NonNull final UUID id, CompMaterial parentBlock, @NonNull final ItemStack item, final double chance, boolean dropOnNatural, boolean dropOnPlaced, List<String> commands) {
+		super(id, DropType.BLOCK, item, chance, commands);
+		this.dropOnNatural = dropOnNatural;
+		this.dropOnPlaced = dropOnPlaced;
+		this.parentBlock = parentBlock;
 	}
 
-	@Override
-	public void setItem(@NonNull ItemStack newDrop) {
-		this.item = newDrop;
+	public BlockDrop(@NonNull final UUID id, CompMaterial parentBlock, @NonNull final ItemStack item, final double chance, boolean dropOnNatural, boolean dropOnPlaced) {
+		this(id, parentBlock, item, chance, dropOnNatural, dropOnPlaced, new ArrayList<>());
 	}
 
-	@Override
-	public double getDropChance() {
-		return this.chance;
+	public BlockDrop(@NonNull final UUID id, CompMaterial parentBlock, @NonNull final ItemStack item, final double chance) {
+		this(id, parentBlock, item, chance, true, false, new ArrayList<>());
 	}
 
-	@Override
-	public void setDropChance(double chance) {
-		this.chance = chance;
-	}
-
-	@Override
-	public List<String> getCommands() {
-		return this.commands;
+	public static BlockDrop empty(CompMaterial parentBlock) {
+		return new BlockDrop(UUID.randomUUID(), parentBlock, CompMaterial.STONE.parseItem(), 50, true, true, new ArrayList<>());
 	}
 }

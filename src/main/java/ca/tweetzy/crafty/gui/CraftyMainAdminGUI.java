@@ -1,6 +1,8 @@
 package ca.tweetzy.crafty.gui;
 
 import ca.tweetzy.crafty.Crafty;
+import ca.tweetzy.crafty.gui.drops.block.BlockDropListGUI;
+import ca.tweetzy.crafty.gui.drops.mob.MobDropListGUI;
 import ca.tweetzy.crafty.gui.template.CraftyBaseGUI;
 import ca.tweetzy.flight.comp.enums.CompMaterial;
 import ca.tweetzy.flight.utils.QuickItem;
@@ -31,8 +33,7 @@ public final class CraftyMainAdminGUI extends CraftyBaseGUI {
 				.of(CompMaterial.BLAZE_SPAWN_EGG)
 				.name("<GRADIENT:3dcf50>&LMob Drops</GRADIENT:26d5ed>")
 				.lore("&7Used to edit mob drops", "", "&e&lClick &8» &7to edit drops.")
-				.make(), click -> {
-		});
+				.make(), click -> click.manager.showGUI(click.player, new MobDropListGUI(this, click.player)));
 
 		setButton(2, 6, QuickItem
 				.of(CompMaterial.CRAFTING_TABLE)

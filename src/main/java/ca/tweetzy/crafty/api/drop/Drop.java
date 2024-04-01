@@ -1,20 +1,64 @@
 package ca.tweetzy.crafty.api.drop;
 
+import ca.tweetzy.crafty.Crafty;
+import ca.tweetzy.crafty.api.sync.Identifiable;
+import ca.tweetzy.crafty.api.sync.Storeable;
+import ca.tweetzy.crafty.api.sync.Synchronize;
+import ca.tweetzy.crafty.api.sync.SynchronizeResult;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.function.Consumer;
 
-public abstract class Drop {
+@Getter
+@Setter
+@AllArgsConstructor
+public abstract class Drop implements Identifiable<UUID>, Storeable<Drop>, Synchronize {
 
-	public abstract ItemStack getItem();
+	protected UUID id;
 
-	public abstract void setItem(@NonNull final ItemStack newDrop);
+	protected DropType dropType;
+	protected ItemStack item;
+	protected double chance;
+	protected List<String> commands;
 
-	public abstract double getDropChance();
+	@Override
+	public void store(@NonNull Consumer<Drop> stored) {
+		Crafty.getDataManager().insertTrackedDrop(this, (ex, result) -> {
+			if (ex == null) {
+				stored.accept(result);
+			}
+		});
+	}
 
-	public abstract void setDropChance(final double chance);
+	@Override
+	public void unStore(@Nullable Consumer<SynchronizeResult> syncResult) {
+		Crafty.getDataManager().deleteTrackedDrop(this, (error, updateStatus) -> {
+			if (updateStatus) {
+				Crafty.getDropManager().remove(this);
+			}
 
-	public abstract List<String> getCommands();
+			if (syncResult != null)
+				syncResult.accept(error == null ? updateStatus ? SynchronizeResult.SUCCESS : SynchronizeResult.FAILURE : SynchronizeResult.FAILURE);
+		});
 
+	}
+
+	@Override
+	public void sync(@Nullable Consumer<SynchronizeResult> syncResult) {
+		Crafty.getDataManager().updateTrackedDrop(this, (error, updateStatus) -> {
+			if (syncResult != null)
+				syncResult.accept(error == null ? updateStatus ? SynchronizeResult.SUCCESS : SynchronizeResult.FAILURE : SynchronizeResult.FAILURE);
+		});
+	}
+
+	public enum DropType {
+		MOB, BLOCK
+	}
 }

@@ -3,6 +3,7 @@ package ca.tweetzy.crafty.model.manager;
 import ca.tweetzy.crafty.Crafty;
 import ca.tweetzy.crafty.api.drop.TrackedBlock;
 import ca.tweetzy.crafty.api.manager.KeyValueManager;
+import ca.tweetzy.crafty.impl.BlockDrop;
 import ca.tweetzy.crafty.impl.CraftyTrackedBlock;
 import ca.tweetzy.crafty.impl.CraftyTrackedOptions;
 import ca.tweetzy.flight.comp.enums.CompMaterial;
@@ -42,7 +43,14 @@ public final class BlockDropManager extends KeyValueManager<CompMaterial, Tracke
 
 		Crafty.getDataManager().getTrackedBlocks((error, blocks) -> {
 			if (error == null)
-				blocks.forEach(block -> add(block.getBlock(), block));
+				for (TrackedBlock block : blocks) {
+					Crafty.getDataManager().getTrackedDropsByBlock(block.getBlock(), (dropError, drops) -> {
+						if (dropError == null)
+							drops.forEach(drop -> block.getDrops().add((BlockDrop) drop));
+					});
+
+					add(block.getBlock(), block);
+				}
 		});
 	}
 }

@@ -1,10 +1,16 @@
 package ca.tweetzy.crafty;
 
+import ca.tweetzy.crafty.api.drop.Drop;
 import ca.tweetzy.crafty.commands.CraftyCommand;
 import ca.tweetzy.crafty.database.DataManager;
 import ca.tweetzy.crafty.database.migrations._1_InitialMigration;
+import ca.tweetzy.crafty.database.migrations._2_DropsMigration;
+import ca.tweetzy.crafty.database.migrations._3_TrackedMobMigration;
+import ca.tweetzy.crafty.impl.MobDrop;
 import ca.tweetzy.crafty.listener.BlockListener;
 import ca.tweetzy.crafty.model.manager.BlockDropManager;
+import ca.tweetzy.crafty.model.manager.DropManager;
+import ca.tweetzy.crafty.model.manager.MobDropManager;
 import ca.tweetzy.crafty.settings.Settings;
 import ca.tweetzy.crafty.settings.Translations;
 import ca.tweetzy.flight.FlightPlugin;
@@ -26,6 +32,9 @@ public final class Crafty extends FlightPlugin {
 
 	//======================= MANAGERS =========================
 	private final BlockDropManager blockDropManager = new BlockDropManager();
+	private final MobDropManager mobDropManager = new MobDropManager();
+	private final DropManager dropManager = new DropManager();
+
 	//==========================================================
 
 	@Override
@@ -40,7 +49,9 @@ public final class Crafty extends FlightPlugin {
 		this.dataManager = new DataManager(this.databaseConnector, this);
 
 		final DataMigrationManager dataMigrationManager = new DataMigrationManager(this.databaseConnector, this.dataManager,
-				new _1_InitialMigration()
+				new _1_InitialMigration(),
+				new _2_DropsMigration(),
+				new _3_TrackedMobMigration()
 		);
 
 		// run migrations for tables
@@ -53,6 +64,7 @@ public final class Crafty extends FlightPlugin {
 
 		// managers
 		this.blockDropManager.load();
+		this.mobDropManager.load();
 
 		// listeners
 		getServer().getPluginManager().registerEvents(new BlockListener(), this);
@@ -78,6 +90,15 @@ public final class Crafty extends FlightPlugin {
 	public static BlockDropManager getBlockDropManager() {
 		return getInstance().blockDropManager;
 	}
+
+	public static MobDropManager getMobDropManager() {
+		return getInstance().mobDropManager;
+	}
+
+	public static DropManager getDropManager() {
+		return getInstance().dropManager;
+	}
+
 
 	public static GuiManager getGuiManager() {
 		return getInstance().guiManager;

@@ -1,7 +1,7 @@
-package ca.tweetzy.crafty.gui;
+package ca.tweetzy.crafty.gui.drops;
 
 import ca.tweetzy.crafty.api.drop.TrackedBlock;
-import ca.tweetzy.crafty.api.drop.TrackedOptions;
+import ca.tweetzy.crafty.api.drop.TrackedMob;
 import ca.tweetzy.crafty.api.sync.SynchronizeResult;
 import ca.tweetzy.crafty.gui.selector.WorldSelectorGUI;
 import ca.tweetzy.crafty.gui.template.CraftyPagedGUI;
@@ -13,7 +13,6 @@ import ca.tweetzy.flight.utils.ChatUtil;
 import ca.tweetzy.flight.utils.QuickItem;
 import lombok.NonNull;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -22,10 +21,18 @@ import java.util.stream.Collectors;
 public final class BlockedWorldsListGUI extends CraftyPagedGUI<String> {
 
 	private TrackedBlock trackedBlock;
+	private TrackedMob trackedMob;
+
 
 	public BlockedWorldsListGUI(Gui parent, @NonNull Player player, final TrackedBlock trackedBlock) {
 		super(parent, player, "<GRADIENT:3dcf50>&LCrafty</GRADIENT:26d5ed> &7> &eBlocked Worlds", 6, trackedBlock.getOptions().getBlockedWorlds().stream().filter(world -> !world.isBlank()).collect(Collectors.toList()));
 		this.trackedBlock = trackedBlock;
+		draw();
+	}
+
+	public BlockedWorldsListGUI(Gui parent, @NonNull Player player, final TrackedMob trackedMob) {
+		super(parent, player, "<GRADIENT:3dcf50>&LCrafty</GRADIENT:26d5ed> &7> &eBlocked Worlds", 6, trackedMob.getOptions().getBlockedWorlds().stream().filter(world -> !world.isBlank()).collect(Collectors.toList()));
+		this.trackedMob = trackedMob;
 		draw();
 	}
 
@@ -59,6 +66,15 @@ public final class BlockedWorldsListGUI extends CraftyPagedGUI<String> {
 						click.manager.showGUI(click.player, new BlockedWorldsListGUI(this.parent, click.player, this.trackedBlock));
 				});
 			}
+
+			if (this.trackedMob.getOptions() != null && !this.trackedMob.getOptions().getBlockedWorlds().contains(selected.getName())) {
+				this.trackedMob.getOptions().getBlockedWorlds().add(selected.getName());
+
+				this.trackedMob.sync(result -> {
+					if (result == SynchronizeResult.SUCCESS)
+						click.manager.showGUI(click.player, new BlockedWorldsListGUI(this.parent, click.player, this.trackedMob));
+				});
+			}
 		})));
 	}
 
@@ -82,6 +98,14 @@ public final class BlockedWorldsListGUI extends CraftyPagedGUI<String> {
 			this.trackedBlock.sync(result -> {
 				if (result == SynchronizeResult.SUCCESS)
 					click.manager.showGUI(click.player, new BlockedWorldsListGUI(this.parent, click.player, this.trackedBlock));
+			});
+		}
+
+		if (this.trackedMob != null) {
+			this.trackedMob.getOptions().getBlockedWorlds().remove(world);
+			this.trackedMob.sync(result -> {
+				if (result == SynchronizeResult.SUCCESS)
+					click.manager.showGUI(click.player, new BlockedWorldsListGUI(this.parent, click.player, this.trackedMob));
 			});
 		}
 	}

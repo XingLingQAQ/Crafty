@@ -1,4 +1,4 @@
-package ca.tweetzy.crafty.gui;
+package ca.tweetzy.crafty.gui.drops.block;
 
 import ca.tweetzy.crafty.Crafty;
 import ca.tweetzy.crafty.api.drop.TrackedBlock;
