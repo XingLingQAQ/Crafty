@@ -107,7 +107,7 @@ public final class TrackedBlockEditorGUI extends CraftyPagedGUI<BlockDrop> {
 						"&7Drop Chance&F: &a" + drop.getChance() + "&F%",
 						"",
 						"&e&lLeft Click &8» &7to edit drop",
-						"&c&lRight Click &8» &cto delete drop",
+						"&4&lRight Click &8» &cto delete drop",
 						"&8&m------------------------------"
 				)
 				.make();

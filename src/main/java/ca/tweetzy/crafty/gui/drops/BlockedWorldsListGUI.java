@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 
 public final class BlockedWorldsListGUI extends CraftyPagedGUI<String> {
 
-	private TrackedBlock trackedBlock;
-	private TrackedMob trackedMob;
+	private TrackedBlock trackedBlock = null;
+	private TrackedMob trackedMob = null;
 
 
 	public BlockedWorldsListGUI(Gui parent, @NonNull Player player, final TrackedBlock trackedBlock) {
@@ -58,16 +58,18 @@ public final class BlockedWorldsListGUI extends CraftyPagedGUI<String> {
 				)
 				.make(), click -> click.manager.showGUI(click.player, new WorldSelectorGUI(this, click.player, selected -> {
 
-			if (this.trackedBlock.getOptions() != null && !this.trackedBlock.getOptions().getBlockedWorlds().contains(selected.getName())) {
+			if (this.trackedBlock != null && !this.trackedBlock.getOptions().getBlockedWorlds().contains(selected.getName())) {
 				this.trackedBlock.getOptions().getBlockedWorlds().add(selected.getName());
 
 				this.trackedBlock.sync(result -> {
 					if (result == SynchronizeResult.SUCCESS)
 						click.manager.showGUI(click.player, new BlockedWorldsListGUI(this.parent, click.player, this.trackedBlock));
 				});
+
+				return;
 			}
 
-			if (this.trackedMob.getOptions() != null && !this.trackedMob.getOptions().getBlockedWorlds().contains(selected.getName())) {
+			if (this.trackedMob != null && !this.trackedMob.getOptions().getBlockedWorlds().contains(selected.getName())) {
 				this.trackedMob.getOptions().getBlockedWorlds().add(selected.getName());
 
 				this.trackedMob.sync(result -> {
@@ -99,6 +101,8 @@ public final class BlockedWorldsListGUI extends CraftyPagedGUI<String> {
 				if (result == SynchronizeResult.SUCCESS)
 					click.manager.showGUI(click.player, new BlockedWorldsListGUI(this.parent, click.player, this.trackedBlock));
 			});
+
+			return;
 		}
 
 		if (this.trackedMob != null) {

@@ -1,17 +1,17 @@
 package ca.tweetzy.crafty.gui.drops.mob;
 
-import ca.tweetzy.crafty.api.drop.TrackedBlock;
+import ca.tweetzy.crafty.api.ValidMob;
 import ca.tweetzy.crafty.api.drop.TrackedMob;
 import ca.tweetzy.crafty.api.sync.SynchronizeResult;
 import ca.tweetzy.crafty.gui.drops.BlockedWorldsListGUI;
 import ca.tweetzy.crafty.gui.drops.DropEditorGUI;
 import ca.tweetzy.crafty.gui.template.CraftyPagedGUI;
-import ca.tweetzy.crafty.impl.BlockDrop;
 import ca.tweetzy.crafty.impl.MobDrop;
 import ca.tweetzy.flight.comp.enums.CompMaterial;
 import ca.tweetzy.flight.gui.Gui;
 import ca.tweetzy.flight.gui.events.GuiClickEvent;
 import ca.tweetzy.flight.gui.helper.InventoryBorder;
+import ca.tweetzy.flight.utils.ChatUtil;
 import ca.tweetzy.flight.utils.QuickItem;
 import lombok.NonNull;
 import org.bukkit.entity.Player;
@@ -40,7 +40,7 @@ public final class TrackedMobEditorGUI extends CraftyPagedGUI<MobDrop> {
 	protected void drawFixed() {
 		applyBackExit();
 
-		setItem(0, 4, QuickItem.of(CompMaterial.BLAZE_SPAWN_EGG).make());
+		setItem(0, 4, QuickItem.of(Enum.valueOf(ValidMob.class, trackedMob.getEntity().name()).getHeadTexture()).name(ChatUtil.capitalizeFully(trackedMob.getEntity())).make());
 
 		drawDefaultDrops();
 		drawAddButton();
@@ -109,7 +109,7 @@ public final class TrackedMobEditorGUI extends CraftyPagedGUI<MobDrop> {
 						"&7Drop Chance&F: &a" + drop.getChance() + "&F%",
 						"",
 						"&e&lLeft Click &8» &7to edit drop",
-						"&c&lRight Click &8» &cto delete drop",
+						"&4&lRight Click &8» &cto delete drop",
 						"&8&m------------------------------"
 				)
 				.make();

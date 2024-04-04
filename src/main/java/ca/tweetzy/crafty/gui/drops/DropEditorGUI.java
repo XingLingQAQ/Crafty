@@ -4,7 +4,10 @@ import ca.tweetzy.crafty.Crafty;
 import ca.tweetzy.crafty.api.drop.Drop;
 import ca.tweetzy.crafty.api.drop.TrackedBlock;
 import ca.tweetzy.crafty.api.drop.TrackedMob;
+import ca.tweetzy.crafty.gui.CraftyMainAdminGUI;
+import ca.tweetzy.crafty.gui.drops.block.BlockDropListGUI;
 import ca.tweetzy.crafty.gui.drops.block.TrackedBlockEditorGUI;
+import ca.tweetzy.crafty.gui.drops.mob.MobDropListGUI;
 import ca.tweetzy.crafty.gui.drops.mob.TrackedMobEditorGUI;
 import ca.tweetzy.crafty.gui.template.CraftyBaseGUI;
 import ca.tweetzy.crafty.impl.BlockDrop;
@@ -83,21 +86,21 @@ public final class DropEditorGUI extends CraftyBaseGUI {
 			if (this.trackedBlock != null) {
 				if (this.editorMode == DropEditorMode.ADD) {
 					this.trackedBlock.getDrops().add((BlockDrop) this.drop);
-					Crafty.getDropManager().addDrop(drop, created -> click.manager.showGUI(click.player, new TrackedBlockEditorGUI(this.parent.getParent(), click.player, this.trackedBlock)));
+					Crafty.getDropManager().addDrop(drop, created -> click.manager.showGUI(click.player, new TrackedBlockEditorGUI(new BlockDropListGUI(new CraftyMainAdminGUI(click.player), click.player), click.player, this.trackedBlock)));
 				}
 
 				if (this.editorMode == DropEditorMode.EDIT)
-					drop.sync(result -> click.manager.showGUI(click.player, new TrackedBlockEditorGUI(this.parent.getParent(), click.player, this.trackedBlock)));
+					drop.sync(result -> click.manager.showGUI(click.player, new TrackedBlockEditorGUI(new BlockDropListGUI(new CraftyMainAdminGUI(click.player), click.player), click.player, this.trackedBlock)));
 			}
 
 			if (this.trackedMob != null) {
 				if (this.editorMode == DropEditorMode.ADD) {
 					this.trackedMob.getDrops().add((MobDrop) this.drop);
-					Crafty.getDropManager().addDrop(drop, created -> click.manager.showGUI(click.player, new TrackedMobEditorGUI(this.parent.getParent(), click.player, this.trackedMob)));
+					Crafty.getDropManager().addDrop(drop, created -> click.manager.showGUI(click.player, new TrackedMobEditorGUI(new MobDropListGUI(new CraftyMainAdminGUI(click.player), click.player), click.player, this.trackedMob)));
 				}
 
 				if (this.editorMode == DropEditorMode.EDIT)
-					drop.sync(result -> click.manager.showGUI(click.player, new TrackedMobEditorGUI(this.parent.getParent(), click.player, this.trackedMob)));
+					drop.sync(result -> click.manager.showGUI(click.player, new TrackedMobEditorGUI(new MobDropListGUI(new CraftyMainAdminGUI(click.player), click.player), click.player, this.trackedMob)));
 			}
 
 		});
@@ -282,7 +285,12 @@ public final class DropEditorGUI extends CraftyBaseGUI {
 				}
 
 				DropEditorGUI.this.drop.setChance(chance);
-				click.manager.showGUI(click.player, new DropEditorGUI(DropEditorGUI.this.parent, click.player, DropEditorGUI.this.drop, DropEditorGUI.this.trackedBlock, DropEditorGUI.this.editorMode));
+				if (DropEditorGUI.this.trackedBlock != null)
+					click.manager.showGUI(click.player, new DropEditorGUI(DropEditorGUI.this.parent, click.player, DropEditorGUI.this.drop, DropEditorGUI.this.trackedBlock, DropEditorGUI.this.editorMode));
+
+				if (DropEditorGUI.this.trackedMob != null)
+					click.manager.showGUI(click.player, new DropEditorGUI(DropEditorGUI.this.parent, click.player, DropEditorGUI.this.drop, DropEditorGUI.this.trackedMob, DropEditorGUI.this.editorMode));
+
 				return true;
 			}
 		});

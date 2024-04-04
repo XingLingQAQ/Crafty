@@ -8,6 +8,7 @@ import ca.tweetzy.crafty.database.migrations._2_DropsMigration;
 import ca.tweetzy.crafty.database.migrations._3_TrackedMobMigration;
 import ca.tweetzy.crafty.impl.MobDrop;
 import ca.tweetzy.crafty.listener.BlockListener;
+import ca.tweetzy.crafty.listener.EntityListener;
 import ca.tweetzy.crafty.model.manager.BlockDropManager;
 import ca.tweetzy.crafty.model.manager.DropManager;
 import ca.tweetzy.crafty.model.manager.MobDropManager;
@@ -20,6 +21,9 @@ import ca.tweetzy.flight.database.DatabaseConnector;
 import ca.tweetzy.flight.database.SQLiteConnector;
 import ca.tweetzy.flight.gui.GuiManager;
 import ca.tweetzy.flight.utils.Common;
+import org.bukkit.NamespacedKey;
+
+import javax.xml.stream.events.Namespace;
 
 public final class Crafty extends FlightPlugin {
 
@@ -37,12 +41,19 @@ public final class Crafty extends FlightPlugin {
 
 	//==========================================================
 
+	private NamespacedKey userPlacedBlockKey;
+	private NamespacedKey creatureSpawnKey;
+
 	@Override
 	protected void onFlight() {
 		Settings.init();
 		Translations.init();
 
 		Common.setPrefix(Settings.PREFIX.getStringOr("<GRADIENT:3dcf50>&LCrafty</GRADIENT:26d5ed> &8»"));
+
+		// create name spaced key
+		this.userPlacedBlockKey = new NamespacedKey(this, "CraftyPlacedBlock");
+		this.creatureSpawnKey = new NamespacedKey(this, "CraftySpawnedMob");
 
 		// Set up the database if enabled
 		this.databaseConnector = new SQLiteConnector(this);
@@ -68,6 +79,7 @@ public final class Crafty extends FlightPlugin {
 
 		// listeners
 		getServer().getPluginManager().registerEvents(new BlockListener(), this);
+		getServer().getPluginManager().registerEvents(new EntityListener(), this);
 
 		// setup commands
 		this.commandManager.registerCommandDynamically(new CraftyCommand());
@@ -85,6 +97,14 @@ public final class Crafty extends FlightPlugin {
 
 	public static Crafty getInstance() {
 		return (Crafty) FlightPlugin.getInstance();
+	}
+
+	public static NamespacedKey getPlacedBlockKey() {
+		return getInstance().userPlacedBlockKey;
+	}
+
+	public static NamespacedKey getCreatureSpawnKey() {
+		return getInstance().creatureSpawnKey;
 	}
 
 	public static BlockDropManager getBlockDropManager() {

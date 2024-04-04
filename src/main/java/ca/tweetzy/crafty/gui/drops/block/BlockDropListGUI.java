@@ -56,7 +56,7 @@ public final class BlockDropListGUI extends CraftyPagedGUI<TrackedBlock> {
 						"&7This block is currently tracked",
 						"",
 						"&e&lLeft Click &8» &7to edit block",
-						"&c&lRight Click &8» &cto delete block"
+						"&4&lRight Click &8» &cto delete block"
 				)
 				.make();
 	}

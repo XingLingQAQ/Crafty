@@ -60,7 +60,7 @@ public final class MobDropListGUI extends CraftyPagedGUI<TrackedMob> {
 						"&7This mob is currently tracked",
 						"",
 						"&e&lLeft Click &8» &7to edit mob",
-						"&c&lRight Click &8» &cto delete mob"
+						"&4&lRight Click &8» &cto delete mob"
 				)
 				.make();
 	}
