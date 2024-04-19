@@ -220,6 +220,7 @@ public final class DropEditorGUI extends CraftyBaseGUI {
 		drawDropItem();
 		drawChance();
 		drawCommands();
+		drawConditions();
 	}
 
 	private void drawDropItem() {
@@ -241,6 +242,11 @@ public final class DropEditorGUI extends CraftyBaseGUI {
 					this.drop.setItem(selected.parseItem());
 					if (this.trackedBlock != null) {
 						click.manager.showGUI(click.player, new DropEditorGUI(DropEditorGUI.this.parent, click.player, DropEditorGUI.this.drop, DropEditorGUI.this.trackedBlock, DropEditorGUI.this.editorMode));
+					}
+
+					if (this.trackedMob != null) {
+						click.manager.showGUI(click.player, new DropEditorGUI(DropEditorGUI.this.parent, click.player, DropEditorGUI.this.drop, DropEditorGUI.this.trackedMob, DropEditorGUI.this.editorMode));
+
 					}
 				}));
 			}
@@ -308,6 +314,20 @@ public final class DropEditorGUI extends CraftyBaseGUI {
 						"&e&lClick &8» &7to view commands"
 				)
 				.hideTags(true).make(), click -> click.manager.showGUI(click.player, new CommandsListGUI(this, click.player, this.drop)));
+	}
+
+	private void drawConditions() {
+		setButton(2, 6, QuickItem
+				.of(CompMaterial.REPEATER)
+				.name("<GRADIENT:3dcf50>&LConditions</GRADIENT:26d5ed>")
+				.lore(
+						"&8View all conditions",
+						"&7Conditions are literally just requirements",
+						"&7that must be meet for the chance to roll.",
+						"",
+						"&e&lClick &8» &7to view conditions"
+				)
+				.hideTags(true).make(), click -> click.manager.showGUI(click.player, new DropConditionsGUI(this, click.player, this.drop)));
 	}
 
 	public enum DropEditorMode {
