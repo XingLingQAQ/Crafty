@@ -240,7 +240,7 @@ public final class DataManager extends DataManagerAbstract {
 
 	public void insertTrackedDrop(@NonNull final Drop drop, final Callback<Drop> callback) {
 		this.runAsync(() -> this.databaseConnector.connect(connection -> {
-			final String query = "INSERT INTO " + this.getTablePrefix() + "drop (id, type, block, entity, item, chance, commands, drop_on_natural, drop_on_placed, drop_from_spawner, drop_from_egg) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			final String query = "INSERT INTO " + this.getTablePrefix() + "drop (id, type, block, entity, item, chance, commands, drop_on_natural, drop_on_placed, drop_from_spawner, drop_from_egg, conditions) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			final String fetchQuery = "SELECT * FROM " + this.getTablePrefix() + "drop WHERE id = ?";
 
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -276,6 +276,8 @@ public final class DataManager extends DataManagerAbstract {
 				preparedStatement.setDouble(6, drop.getChance());
 				preparedStatement.setString(7, String.join(";;;", drop.getCommands()));
 
+				preparedStatement.setString(12, drop.getCondition().getJSONString());
+
 				preparedStatement.executeUpdate();
 
 				if (callback != null) {
@@ -293,7 +295,7 @@ public final class DataManager extends DataManagerAbstract {
 
 	public void updateTrackedDrop(@NonNull final Drop drop, final Callback<Boolean> callback) {
 		this.runAsync(() -> this.databaseConnector.connect(connection -> {
-			final String query = "UPDATE " + this.getTablePrefix() + "drop SET item = ?, chance = ?, commands = ?, drop_on_natural = ?, drop_on_placed = ?, drop_from_spawner = ?, drop_from_egg = ? WHERE id = ?";
+			final String query = "UPDATE " + this.getTablePrefix() + "drop SET item = ?, chance = ?, commands = ?, drop_on_natural = ?, drop_on_placed = ?, drop_from_spawner = ?, drop_from_egg = ?, conditions = ? WHERE id = ?";
 
 			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -317,7 +319,8 @@ public final class DataManager extends DataManagerAbstract {
 					preparedStatement.setBoolean(7, mobDrop.isDropFromEgg());
 				}
 
-				preparedStatement.setString(8, drop.getId().toString());
+				preparedStatement.setString(8, drop.getCondition().getJSONString());
+				preparedStatement.setString(9, drop.getId().toString());
 
 				int result = preparedStatement.executeUpdate();
 
@@ -412,8 +415,8 @@ public final class DataManager extends DataManagerAbstract {
 
 		return switch (dropType) {
 			case MOB ->
-					new MobDrop(uuid, Enum.valueOf(EntityType.class, resultSet.getString("entity")), item, chance, commands, dropOnNatural, resultSet.getBoolean("drop_from_spawner"), resultSet.getBoolean("drop_from_egg"));
-			case BLOCK -> new BlockDrop(uuid, Enum.valueOf(CompMaterial.class, resultSet.getString("block")), item, chance, dropOnNatural, resultSet.getBoolean("drop_on_placed"), commands);
+					new MobDrop(uuid, Enum.valueOf(EntityType.class, resultSet.getString("entity")), item, chance, commands, dropOnNatural, resultSet.getBoolean("drop_from_spawner"), resultSet.getBoolean("drop_from_egg"), DropCondition.decodeCondition(resultSet.getString("conditions")));
+			case BLOCK -> new BlockDrop(uuid, Enum.valueOf(CompMaterial.class, resultSet.getString("block")), item, chance, dropOnNatural, resultSet.getBoolean("drop_on_placed"), commands, DropCondition.decodeCondition(resultSet.getString("conditions")));
 		};
 	}
 
