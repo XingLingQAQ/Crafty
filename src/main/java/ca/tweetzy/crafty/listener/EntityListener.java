@@ -43,6 +43,10 @@ public final class EntityListener implements Listener {
 			event.getDrops().clear();
 		}
 
+		// is the killer even a player
+		if (entity.getKiller() == null) return;
+		final Player killer = entity.getKiller();
+
 		// grab pdc
 		SpawnReason spawnReason = SpawnReason.NATURAL;
 		if (entity.getPersistentDataContainer().has(Crafty.getCreatureSpawnKey(), PersistentDataType.STRING)) {
@@ -50,7 +54,6 @@ public final class EntityListener implements Listener {
 			assert possibleReason != null;
 			spawnReason = Enum.valueOf(SpawnReason.class, possibleReason);
 		}
-
 
 		for (MobDrop drop : trackedMob.getDrops()) {
 			// mob spawned by egg and drop is false
@@ -64,14 +67,12 @@ public final class EntityListener implements Listener {
 			}
 
 			// natural mobs
-
 			if (Chance.byPercentage((float) drop.getChance())) {
-				entity.getWorld().dropItemNaturally(entity.getLocation(), drop.getItem());
-				// execute commands
+				if (drop.getCondition().meetsConditions(entity, killer)) {
+					entity.getWorld().dropItemNaturally(entity.getLocation(), drop.getItem());
+					// execute commands
 
-				// if killer from player
-				if (entity.getKiller() != null) {
-					final Player killer = entity.getKiller();
+					// if killer from player
 					drop.getCommands().forEach(command -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), Replacer.replaceVariables(command, "player", killer.getName())));
 				}
 			}
