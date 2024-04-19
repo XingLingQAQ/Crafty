@@ -5,11 +5,10 @@ import ca.tweetzy.crafty.api.drop.TrackedBlock;
 import ca.tweetzy.crafty.impl.BlockDrop;
 import ca.tweetzy.crafty.model.Chance;
 import ca.tweetzy.flight.comp.enums.CompMaterial;
-import ca.tweetzy.flight.utils.Common;
 import ca.tweetzy.flight.utils.Replacer;
 import com.jeff_media.customblockdata.CustomBlockData;
-import lombok.NonNull;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,10 +21,11 @@ import org.bukkit.persistence.PersistentDataType;
 
 public final class BlockListener implements Listener {
 
-	@EventHandler(priority = EventPriority.LOW)
+	@EventHandler
 	public void onBlockBreak(final BlockBreakEvent event) {
 		final Player player = event.getPlayer();
 		final Block block = event.getBlock();
+		if (player.getGameMode() != GameMode.SURVIVAL) return;
 
 		if (!Crafty.getBlockDropManager().isTracked(CompMaterial.matchCompMaterial(block.getType()))) return;
 		final TrackedBlock trackedBlock = Crafty.getBlockDropManager().get(CompMaterial.matchCompMaterial(block.getType()));
@@ -54,9 +54,12 @@ public final class BlockListener implements Listener {
 			}
 
 			if (Chance.byPercentage((float) drop.getChance())) {
-				block.getWorld().dropItemNaturally(block.getLocation(), drop.getItem());
-				// execute commands
-				drop.getCommands().forEach( command -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), Replacer.replaceVariables(command, "player", player.getName())));
+				// check conditions
+				if (drop.getCondition().meetsConditions(event)) {
+					block.getWorld().dropItemNaturally(block.getLocation(), drop.getItem());
+					// execute commands
+					drop.getCommands().forEach(command -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), Replacer.replaceVariables(command, "player", player.getName())));
+				}
 			}
 		}
 
