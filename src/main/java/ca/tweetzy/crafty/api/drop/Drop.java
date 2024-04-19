@@ -27,6 +27,7 @@ public abstract class Drop implements Identifiable<UUID>, Storeable<Drop>, Synch
 	protected ItemStack item;
 	protected double chance;
 	protected List<String> commands;
+	protected Condition condition;
 
 	@Override
 	public void store(@NonNull Consumer<Drop> stored) {
