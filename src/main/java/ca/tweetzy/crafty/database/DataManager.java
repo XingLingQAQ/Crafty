@@ -5,9 +5,10 @@ import ca.tweetzy.crafty.api.drop.Drop;
 import ca.tweetzy.crafty.api.drop.TrackedBlock;
 import ca.tweetzy.crafty.api.drop.TrackedMob;
 import ca.tweetzy.crafty.api.recipe.CustomRecipe;
+import ca.tweetzy.crafty.api.recipe.RecipeType;
 import ca.tweetzy.crafty.impl.drop.*;
 import ca.tweetzy.crafty.impl.recipe.CraftingTableRecipe;
-import ca.tweetzy.crafty.model.manager.CustomRecipeManager;
+import ca.tweetzy.crafty.impl.recipe.CraftyCookingRecipe;
 import ca.tweetzy.flight.comp.enums.CompMaterial;
 import ca.tweetzy.flight.database.Callback;
 import ca.tweetzy.flight.database.DataManagerAbstract;
@@ -419,7 +420,8 @@ public final class DataManager extends DataManagerAbstract {
 		return switch (dropType) {
 			case MOB ->
 					new MobDrop(uuid, Enum.valueOf(EntityType.class, resultSet.getString("entity")), item, chance, commands, dropOnNatural, resultSet.getBoolean("drop_from_spawner"), resultSet.getBoolean("drop_from_egg"), DropCondition.decodeCondition(resultSet.getString("conditions")));
-			case BLOCK -> new BlockDrop(uuid, Enum.valueOf(CompMaterial.class, resultSet.getString("block")), item, chance, dropOnNatural, resultSet.getBoolean("drop_on_placed"), commands, DropCondition.decodeCondition(resultSet.getString("conditions")));
+			case BLOCK ->
+					new BlockDrop(uuid, Enum.valueOf(CompMaterial.class, resultSet.getString("block")), item, chance, dropOnNatural, resultSet.getBoolean("drop_on_placed"), commands, DropCondition.decodeCondition(resultSet.getString("conditions")));
 		};
 	}
 
@@ -439,7 +441,7 @@ public final class DataManager extends DataManagerAbstract {
 				fetch.setString(1, recipe.getId().toLowerCase());
 
 				preparedStatement.setString(1, recipe.getId().toLowerCase());
-				preparedStatement.setString(2, "CRAFTING_TABLE");
+				preparedStatement.setString(2, recipe.getRecipeType().name());
 				preparedStatement.setString(3, recipe.getJSONString());
 
 
@@ -492,7 +494,11 @@ public final class DataManager extends DataManagerAbstract {
 
 
 	private CustomRecipe extractCustomRecipe(final ResultSet resultSet) throws SQLException {
-		return CraftingTableRecipe.decode(resultSet.getString("structure"));
+		final RecipeType recipeType = Enum.valueOf(RecipeType.class, resultSet.getString("type"));
+		if (recipeType ==RecipeType.CRAFTING)
+			return CraftingTableRecipe.decode(resultSet.getString("structure"));
+
+		return CraftyCookingRecipe.decode(recipeType, resultSet.getString("structure"));
 	}
 
 	private void resolveUpdateCallback(@Nullable UpdateCallback callback, @Nullable Exception ex) {
