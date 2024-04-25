@@ -2,7 +2,7 @@ package ca.tweetzy.crafty.api.drop;
 
 import ca.tweetzy.crafty.api.sync.Storeable;
 import ca.tweetzy.crafty.api.sync.Synchronize;
-import ca.tweetzy.crafty.impl.BlockDrop;
+import ca.tweetzy.crafty.impl.drop.BlockDrop;
 import ca.tweetzy.flight.comp.enums.CompMaterial;
 
 import java.util.List;

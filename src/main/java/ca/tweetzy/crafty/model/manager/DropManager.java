@@ -1,16 +1,9 @@
 package ca.tweetzy.crafty.model.manager;
 
-import ca.tweetzy.crafty.Crafty;
 import ca.tweetzy.crafty.api.drop.Drop;
-import ca.tweetzy.crafty.api.drop.TrackedBlock;
-import ca.tweetzy.crafty.api.manager.KeyValueManager;
 import ca.tweetzy.crafty.api.manager.ListManager;
-import ca.tweetzy.crafty.impl.CraftyTrackedBlock;
-import ca.tweetzy.crafty.impl.CraftyTrackedOptions;
-import ca.tweetzy.flight.comp.enums.CompMaterial;
 import lombok.NonNull;
 
-import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public final class DropManager extends ListManager<Drop> {

@@ -1,4 +1,4 @@
-package ca.tweetzy.crafty.impl;
+package ca.tweetzy.crafty.impl.drop;
 
 import ca.tweetzy.crafty.api.drop.Condition;
 import ca.tweetzy.crafty.api.drop.Drop;

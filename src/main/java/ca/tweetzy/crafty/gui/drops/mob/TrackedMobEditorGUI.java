@@ -6,7 +6,7 @@ import ca.tweetzy.crafty.api.sync.SynchronizeResult;
 import ca.tweetzy.crafty.gui.drops.BlockedWorldsListGUI;
 import ca.tweetzy.crafty.gui.drops.DropEditorGUI;
 import ca.tweetzy.crafty.gui.template.CraftyPagedGUI;
-import ca.tweetzy.crafty.impl.MobDrop;
+import ca.tweetzy.crafty.impl.drop.MobDrop;
 import ca.tweetzy.flight.comp.enums.CompMaterial;
 import ca.tweetzy.flight.gui.Gui;
 import ca.tweetzy.flight.gui.events.GuiClickEvent;

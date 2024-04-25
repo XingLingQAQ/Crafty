@@ -2,7 +2,7 @@ package ca.tweetzy.crafty.listener;
 
 import ca.tweetzy.crafty.Crafty;
 import ca.tweetzy.crafty.api.drop.TrackedMob;
-import ca.tweetzy.crafty.impl.MobDrop;
+import ca.tweetzy.crafty.impl.drop.MobDrop;
 import ca.tweetzy.crafty.model.Chance;
 import ca.tweetzy.flight.utils.Replacer;
 import org.bukkit.Bukkit;

@@ -2,7 +2,7 @@ package ca.tweetzy.crafty.listener;
 
 import ca.tweetzy.crafty.Crafty;
 import ca.tweetzy.crafty.api.drop.TrackedBlock;
-import ca.tweetzy.crafty.impl.BlockDrop;
+import ca.tweetzy.crafty.impl.drop.BlockDrop;
 import ca.tweetzy.crafty.model.Chance;
 import ca.tweetzy.flight.comp.enums.CompMaterial;
 import ca.tweetzy.flight.utils.Replacer;

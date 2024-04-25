@@ -3,9 +3,9 @@ package ca.tweetzy.crafty.model.manager;
 import ca.tweetzy.crafty.Crafty;
 import ca.tweetzy.crafty.api.drop.TrackedMob;
 import ca.tweetzy.crafty.api.manager.KeyValueManager;
-import ca.tweetzy.crafty.impl.CraftyTrackedMob;
-import ca.tweetzy.crafty.impl.CraftyTrackedOptions;
-import ca.tweetzy.crafty.impl.MobDrop;
+import ca.tweetzy.crafty.impl.drop.CraftyTrackedMob;
+import ca.tweetzy.crafty.impl.drop.CraftyTrackedOptions;
+import ca.tweetzy.crafty.impl.drop.MobDrop;
 import lombok.NonNull;
 import org.bukkit.entity.EntityType;
 
