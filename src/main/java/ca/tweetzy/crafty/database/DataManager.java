@@ -4,7 +4,10 @@ package ca.tweetzy.crafty.database;
 import ca.tweetzy.crafty.api.drop.Drop;
 import ca.tweetzy.crafty.api.drop.TrackedBlock;
 import ca.tweetzy.crafty.api.drop.TrackedMob;
-import ca.tweetzy.crafty.impl.*;
+import ca.tweetzy.crafty.api.recipe.CustomRecipe;
+import ca.tweetzy.crafty.impl.drop.*;
+import ca.tweetzy.crafty.impl.recipe.CraftingTableRecipe;
+import ca.tweetzy.crafty.model.manager.CustomRecipeManager;
 import ca.tweetzy.flight.comp.enums.CompMaterial;
 import ca.tweetzy.flight.database.Callback;
 import ca.tweetzy.flight.database.DataManagerAbstract;
@@ -418,6 +421,78 @@ public final class DataManager extends DataManagerAbstract {
 					new MobDrop(uuid, Enum.valueOf(EntityType.class, resultSet.getString("entity")), item, chance, commands, dropOnNatural, resultSet.getBoolean("drop_from_spawner"), resultSet.getBoolean("drop_from_egg"), DropCondition.decodeCondition(resultSet.getString("conditions")));
 			case BLOCK -> new BlockDrop(uuid, Enum.valueOf(CompMaterial.class, resultSet.getString("block")), item, chance, dropOnNatural, resultSet.getBoolean("drop_on_placed"), commands, DropCondition.decodeCondition(resultSet.getString("conditions")));
 		};
+	}
+
+	/*
+	===============================================================================================================================
+	CUSTOM RECIPES
+	===============================================================================================================================
+	 */
+	public void insertCustomRecipe(@NonNull final CustomRecipe recipe, final Callback<CustomRecipe> callback) {
+		this.runAsync(() -> this.databaseConnector.connect(connection -> {
+			final String query = "INSERT INTO " + this.getTablePrefix() + "recipe (name, type, structure) VALUES (?, ?, ?)";
+			final String fetchQuery = "SELECT * FROM " + this.getTablePrefix() + "recipe WHERE name = ?";
+
+			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+				final PreparedStatement fetch = connection.prepareStatement(fetchQuery);
+
+				fetch.setString(1, recipe.getId().toLowerCase());
+
+				preparedStatement.setString(1, recipe.getId().toLowerCase());
+				preparedStatement.setString(2, "CRAFTING_TABLE");
+				preparedStatement.setString(3, recipe.getJSONString());
+
+
+				preparedStatement.executeUpdate();
+
+				if (callback != null) {
+					final ResultSet res = fetch.executeQuery();
+					res.next();
+					callback.accept(null, extractCustomRecipe(res));
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				resolveCallback(callback, e);
+			}
+		}));
+	}
+
+	public void deleteCustomRecipe(@NonNull final CustomRecipe recipe, Callback<Boolean> callback) {
+		this.runAsync(() -> this.databaseConnector.connect(connection -> {
+			try (PreparedStatement statement = connection.prepareStatement("DELETE FROM " + this.getTablePrefix() + "recipe WHERE name = ?")) {
+				statement.setString(1, recipe.getId().toLowerCase());
+
+				int result = statement.executeUpdate();
+				callback.accept(null, result > 0);
+
+			} catch (Exception e) {
+				resolveCallback(callback, e);
+				e.printStackTrace();
+			}
+		}));
+	}
+
+	public void getCustomRecipes(@NonNull final Callback<List<CustomRecipe>> callback) {
+		final List<CustomRecipe> customRecipes = new ArrayList<>();
+		this.runAsync(() -> this.databaseConnector.connect(connection -> {
+			try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM " + this.getTablePrefix() + "recipe")) {
+				final ResultSet resultSet = statement.executeQuery();
+				while (resultSet.next()) {
+					final CustomRecipe drop = extractCustomRecipe(resultSet);
+					customRecipes.add(drop);
+				}
+
+				callback.accept(null, customRecipes);
+			} catch (Exception e) {
+				resolveCallback(callback, e);
+			}
+		}));
+	}
+
+
+	private CustomRecipe extractCustomRecipe(final ResultSet resultSet) throws SQLException {
+		return CraftingTableRecipe.decode(resultSet.getString("structure"));
 	}
 
 	private void resolveUpdateCallback(@Nullable UpdateCallback callback, @Nullable Exception ex) {

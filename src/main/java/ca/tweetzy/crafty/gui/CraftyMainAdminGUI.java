@@ -1,9 +1,12 @@
 package ca.tweetzy.crafty.gui;
 
 import ca.tweetzy.crafty.Crafty;
+import ca.tweetzy.crafty.gui.crafting.CraftingTableRecipeGUI;
+import ca.tweetzy.crafty.gui.crafting.CustomRecipeListGUI;
 import ca.tweetzy.crafty.gui.drops.block.BlockDropListGUI;
 import ca.tweetzy.crafty.gui.drops.mob.MobDropListGUI;
 import ca.tweetzy.crafty.gui.template.CraftyBaseGUI;
+import ca.tweetzy.crafty.impl.recipe.CraftingTableRecipe;
 import ca.tweetzy.flight.comp.enums.CompMaterial;
 import ca.tweetzy.flight.utils.QuickItem;
 import lombok.NonNull;
@@ -39,7 +42,6 @@ public final class CraftyMainAdminGUI extends CraftyBaseGUI {
 				.of(CompMaterial.CRAFTING_TABLE)
 				.name("<GRADIENT:3dcf50>&LCustom Recipes</GRADIENT:26d5ed>")
 				.lore("&7Used to make custom recipes", "", "&e&lClick &8» &7to edit recipes.")
-				.make(), click -> {
-		});
+				.make(), click -> click.manager.showGUI(click.player, new CustomRecipeListGUI(this, click.player)));
 	}
 }
