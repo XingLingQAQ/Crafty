@@ -2,6 +2,7 @@ package ca.tweetzy.crafty.impl.recipe;
 
 import ca.tweetzy.crafty.Crafty;
 import ca.tweetzy.crafty.api.recipe.CustomRecipe;
+import ca.tweetzy.crafty.api.recipe.RecipeType;
 import ca.tweetzy.crafty.model.StringUtil;
 import ca.tweetzy.flight.comp.enums.CompMaterial;
 import ca.tweetzy.flight.utils.QuickItem;
@@ -29,7 +30,7 @@ public final class CraftingTableRecipe extends CustomRecipe {
 	private ItemStack result;
 
 	public CraftingTableRecipe(String id, boolean shapeless, boolean requireStackCounts, String format, HashMap<ItemStack, Character> mapping, ItemStack result) {
-		super(id.toLowerCase());
+		super(id.toLowerCase(), RecipeType.CRAFTING);
 		this.shapeless = shapeless;
 		this.requireStackCounts = requireStackCounts;
 		this.format = format;

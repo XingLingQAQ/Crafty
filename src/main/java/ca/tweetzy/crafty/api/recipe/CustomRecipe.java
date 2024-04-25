@@ -3,6 +3,7 @@ package ca.tweetzy.crafty.api.recipe;
 import ca.tweetzy.crafty.Crafty;
 import ca.tweetzy.crafty.api.sync.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -17,6 +18,9 @@ public abstract class CustomRecipe implements Storeable<CustomRecipe>, Identifia
 
 	@Setter
 	protected String id;
+
+	@Getter
+	protected RecipeType recipeType;
 
 	public NamespacedKey getKey() {
 		return new NamespacedKey(Crafty.getInstance(), id.toLowerCase());
