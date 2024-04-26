@@ -31,7 +31,7 @@ public final class DropCondition implements Condition {
 	private List<PotionEffectType> potionEffects;
 
 	public static DropCondition template() {
-		return new DropCondition(1, 1000, "Mob", false, CompMaterial.DIAMOND_SWORD.parseItem(), false, "crafty.drops", false, new ArrayList<>(List.of(Enchantment.DURABILITY)), new ArrayList<>());
+		return new DropCondition(1, 1000, "Mob", false, CompMaterial.DIAMOND_SWORD.parseItem(), false, "crafty.drops", false, new ArrayList<>(), new ArrayList<>());
 	}
 
 	@Override
