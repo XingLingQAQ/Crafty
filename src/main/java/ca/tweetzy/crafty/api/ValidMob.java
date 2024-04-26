@@ -8,10 +8,6 @@ import org.bukkit.entity.EntityType;
 @Getter
 public enum ValidMob {
 
-	/*
-	Ripped from Spawners (https://github.com/Tweetzy/Spawners/blob/main/src/main/java/ca/tweetzy/spawners/api/SpawnerMob.java)
-	 */
-
 	// passive
 	ALLAY(EntityType.ALLAY, MobBehaviour.PASSIVE, "https://textures.minecraft.net/texture/e50294a1747310f104124c6373cc639b712baa57b7d926297b645188b7bb9ab9"),
 	FROG(EntityType.FROG, MobBehaviour.PASSIVE, "https://textures.minecraft.net/texture/87d62e7d4c313f2138250dbf50fa2f5a7792d9a523b18ebcac1cd73b4b656d74"),

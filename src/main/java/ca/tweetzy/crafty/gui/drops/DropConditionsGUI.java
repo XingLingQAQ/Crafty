@@ -297,8 +297,9 @@ public final class DropConditionsGUI extends CraftyBaseGUI {
 
 	private void syncAndReopen() {
 		this.drop.sync(result -> {
-			if (result == SynchronizeResult.FAILURE)
+			if (result == SynchronizeResult.FAILURE) {
 				Common.tell(this.player, "&cSomething went wrong while saving drop condition");
+			}
 
 			Crafty.getGuiManager().showGUI(this.player, new DropConditionsGUI(this.parent, this.player, this.drop));
 		});

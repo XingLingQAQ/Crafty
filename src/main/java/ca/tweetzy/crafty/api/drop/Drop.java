@@ -54,8 +54,11 @@ public abstract class Drop implements Identifiable<UUID>, Storeable<Drop>, Synch
 	@Override
 	public void sync(@Nullable Consumer<SynchronizeResult> syncResult) {
 		Crafty.getDataManager().updateTrackedDrop(this, (error, updateStatus) -> {
-			if (syncResult != null)
+			if (syncResult != null) {
+				if (error != null)
+					error.printStackTrace();
 				syncResult.accept(error == null ? updateStatus ? SynchronizeResult.SUCCESS : SynchronizeResult.FAILURE : SynchronizeResult.FAILURE);
+			}
 		});
 	}
 
