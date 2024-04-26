@@ -3,6 +3,7 @@ package ca.tweetzy.crafty.gui.recipe;
 import ca.tweetzy.crafty.Crafty;
 import ca.tweetzy.crafty.api.recipe.CustomRecipe;
 import ca.tweetzy.crafty.api.recipe.RecipeType;
+import ca.tweetzy.crafty.api.sync.SynchronizeResult;
 import ca.tweetzy.crafty.gui.template.CraftyPagedGUI;
 import ca.tweetzy.crafty.impl.recipe.CraftingTableRecipe;
 import ca.tweetzy.crafty.impl.recipe.CraftyCookingRecipe;
@@ -121,7 +122,10 @@ public final class CustomRecipeListGUI extends CraftyPagedGUI<CustomRecipe> {
 				event.manager.showGUI(event.player, new CraftingTableRecipeGUI(this.parent, event.player, (CraftingTableRecipe) recipe, true));
 
 		if (event.clickType == ClickType.RIGHT)
-			recipe.unStore(result -> event.manager.showGUI(event.player, new CustomRecipeListGUI(this.parent, event.player)));
+			recipe.unStore(result -> {
+				if (result == SynchronizeResult.SUCCESS)
+					event.manager.showGUI(event.player, new CustomRecipeListGUI(this.parent, event.player));
+			});
 	}
 
 	@Override

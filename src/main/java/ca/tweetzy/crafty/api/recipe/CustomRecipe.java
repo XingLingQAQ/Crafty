@@ -68,8 +68,6 @@ public abstract class CustomRecipe implements Storeable<CustomRecipe>, Identifia
 	public void unStore(@Nullable Consumer<SynchronizeResult> syncResult) {
 		Crafty.getDataManager().deleteCustomRecipe(this, (error, res) -> {
 			if (error == null && res) {
-				if (syncResult != null)
-					syncResult.accept(SynchronizeResult.SUCCESS);
 				Crafty.getRecipeManager().remove(this.getId());
 				Crafty.getInstance().getServer().removeRecipe(this.getKey());
 
@@ -78,6 +76,9 @@ public abstract class CustomRecipe implements Storeable<CustomRecipe>, Identifia
 					if (player.hasDiscoveredRecipe(this.getKey()))
 						player.undiscoverRecipe(this.getKey());
 				});
+
+				if (syncResult != null)
+					syncResult.accept(SynchronizeResult.SUCCESS);
 
 			} else if (syncResult != null)
 				syncResult.accept(SynchronizeResult.FAILURE);

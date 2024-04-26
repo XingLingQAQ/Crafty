@@ -224,7 +224,14 @@ public final class DropEditorGUI extends CraftyBaseGUI {
 	}
 
 	private void drawDropItem() {
-		setButton(1, 4, this.drop.getItem(), click -> {
+		setButton(1, 4, QuickItem
+				.of(this.drop.getItem())
+				.lore(
+						"",
+						"&e&lLeft Click &8» &7to open material picker",
+						"&b&lRight Click &8» &7with item to set"
+				)
+				.make(), click -> {
 
 			if (click.clickType == ClickType.RIGHT) {
 				final ItemStack cursor = click.cursor;

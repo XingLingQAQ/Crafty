@@ -24,9 +24,20 @@ public final class StringUtil {
 		int length = text.length();
 
 		for (int i = 0; i < length; i += chunkSize) {
-			results.add(text.substring(i, Math.min(length, i + chunkSize)));
+			String portion = text.substring(i, Math.min(length, i + chunkSize));
+			results.add(portion.equalsIgnoreCase(" ") ? portion + " " : portion);
 		}
 
 		return results;
 	}
+
+//	public List<String> boxStrings(List<String> strings) {
+//		String test = "+------+------+------+" +
+//				"+  %s  |  %s  |  %s  |" +
+//				"+------+------+------+" +
+//				"+  %s  |  %s  |  %s  |" +
+//				"+------+------+------+" +
+//				"+  %s  |  %s  |  %s  |" +
+//				"+------+------+------+";
+//	}
 }
