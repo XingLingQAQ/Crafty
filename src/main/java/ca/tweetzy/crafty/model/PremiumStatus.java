@@ -23,15 +23,23 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public final class PremiumStatus {
 
-	String IS_SONGODA_DOWNLOAD = "%%__SONGODA__%%";
-	String SONGODA_NODE = "%%__SONGODA_NODE__%%";
 	String TIMESTAMP = "%%__TIMESTAMP__%%";
 	String USER = "%%__USER__%%";
 	String USERNAME = "%%__USERNAME__%%";
+	String POLYMART = "%%__POLYMART__%%";
+
 	String RESOURCE = "%%__RESOURCE__%%";
 	String NONCE = "%%__NONCE__%%";
 
 	public boolean isUnlicensed() {
 		return USER.startsWith("%%__USE") && USER.endsWith("R__%%");
+	}
+
+	public boolean isPolymartDownload() {
+		return POLYMART.equalsIgnoreCase("1");
+	}
+
+	public boolean isSpigot() {
+		return !isUnlicensed() && !isPolymartDownload();
 	}
 }
