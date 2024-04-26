@@ -1,12 +1,11 @@
 package ca.tweetzy.crafty.gui;
 
 import ca.tweetzy.crafty.Crafty;
-import ca.tweetzy.crafty.gui.crafting.CraftingTableRecipeGUI;
-import ca.tweetzy.crafty.gui.crafting.CustomRecipeListGUI;
+import ca.tweetzy.crafty.gui.recipe.CustomRecipeListGUI;
 import ca.tweetzy.crafty.gui.drops.block.BlockDropListGUI;
 import ca.tweetzy.crafty.gui.drops.mob.MobDropListGUI;
 import ca.tweetzy.crafty.gui.template.CraftyBaseGUI;
-import ca.tweetzy.crafty.impl.recipe.CraftingTableRecipe;
+import ca.tweetzy.crafty.model.PremiumStatus;
 import ca.tweetzy.flight.comp.enums.CompMaterial;
 import ca.tweetzy.flight.utils.QuickItem;
 import lombok.NonNull;
@@ -15,7 +14,7 @@ import org.bukkit.entity.Player;
 public final class CraftyMainAdminGUI extends CraftyBaseGUI {
 
 	public CraftyMainAdminGUI(@NonNull Player player) {
-		super(null, player, "<GRADIENT:3dcf50>&LCrafty</GRADIENT:26d5ed> &fv&7" + Crafty.getInstance().getVersion(), 5);
+		super(null, player, "<GRADIENT:3dcf50>&LCrafty</GRADIENT:26d5ed> &fv&7" + Crafty.getInstance().getVersion() + (PremiumStatus.isUnlicensed() ? "&f - &cUnverified" : ""), 5);
 		draw();
 	}
 
