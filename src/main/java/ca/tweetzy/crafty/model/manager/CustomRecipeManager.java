@@ -31,7 +31,7 @@ public final class CustomRecipeManager extends KeyValueManager<String, CustomRec
 		clear();
 
 		Crafty.getDataManager().getCustomRecipes((error, result) -> {
-			if (error ==null)
+			if (error == null)
 				result.forEach(recipe -> {
 					add(recipe.getId(), recipe);
 					recipe.register();

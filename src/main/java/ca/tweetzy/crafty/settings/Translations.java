@@ -1,8 +1,8 @@
 package ca.tweetzy.crafty.settings;
 
+import ca.tweetzy.crafty.Crafty;
 import ca.tweetzy.flight.settings.TranslationEntry;
 import ca.tweetzy.flight.settings.TranslationManager;
-import ca.tweetzy.crafty.Crafty;
 import lombok.NonNull;
 import org.bukkit.plugin.java.JavaPlugin;
 

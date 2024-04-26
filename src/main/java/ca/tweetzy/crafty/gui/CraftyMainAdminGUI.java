@@ -1,11 +1,10 @@
 package ca.tweetzy.crafty.gui;
 
 import ca.tweetzy.crafty.Crafty;
-import ca.tweetzy.crafty.gui.recipe.CustomRecipeListGUI;
 import ca.tweetzy.crafty.gui.drops.block.BlockDropListGUI;
 import ca.tweetzy.crafty.gui.drops.mob.MobDropListGUI;
+import ca.tweetzy.crafty.gui.recipe.CustomRecipeListGUI;
 import ca.tweetzy.crafty.gui.template.CraftyBaseGUI;
-import ca.tweetzy.crafty.model.PremiumStatus;
 import ca.tweetzy.flight.comp.enums.CompMaterial;
 import ca.tweetzy.flight.utils.ChatUtil;
 import ca.tweetzy.flight.utils.Common;

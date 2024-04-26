@@ -128,7 +128,7 @@ public interface Condition extends Jsonable {
 		final boolean hasMeta = a.hasItemMeta() == b.hasItemMeta();
 
 		if (!hasMeta && sameType)
-			 return true;
+			return true;
 
 		// this lowkey sucks, but it works until I find an easier way to fix this
 		JsonObject aObj = JsonParser.parseString(a.getItemMeta().getAsString()).getAsJsonObject();

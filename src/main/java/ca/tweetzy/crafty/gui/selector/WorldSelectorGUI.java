@@ -1,6 +1,5 @@
 package ca.tweetzy.crafty.gui.selector;
 
-import ca.tweetzy.crafty.Crafty;
 import ca.tweetzy.crafty.gui.template.CraftyPagedGUI;
 import ca.tweetzy.flight.gui.Gui;
 import ca.tweetzy.flight.gui.events.GuiClickEvent;

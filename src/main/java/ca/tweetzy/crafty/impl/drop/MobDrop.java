@@ -25,7 +25,7 @@ public final class MobDrop extends Drop {
 	private Condition condition;
 
 	public MobDrop(@NonNull final UUID id, EntityType parentMob, @NonNull final ItemStack item, final double chance, List<String> commands, boolean dropOnNatural, boolean dropFromSpawner, boolean dropFromEgg, Condition condition) {
-		super(id, DropType.MOB, item, chance, commands,condition);
+		super(id, DropType.MOB, item, chance, commands, condition);
 		this.parentMob = parentMob;
 		this.dropOnNatural = dropOnNatural;
 		this.dropFromSpawner = dropFromSpawner;

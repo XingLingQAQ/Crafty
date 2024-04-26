@@ -4,7 +4,6 @@ import ca.tweetzy.crafty.Crafty;
 import ca.tweetzy.crafty.api.ValidMob;
 import ca.tweetzy.crafty.api.drop.TrackedMob;
 import ca.tweetzy.crafty.api.sync.SynchronizeResult;
-import ca.tweetzy.crafty.gui.drops.block.TrackedBlockEditorGUI;
 import ca.tweetzy.crafty.gui.selector.MobSelectorGUI;
 import ca.tweetzy.crafty.gui.template.CraftyPagedGUI;
 import ca.tweetzy.flight.comp.enums.CompMaterial;

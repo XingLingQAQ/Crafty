@@ -16,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Stack;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -65,7 +64,7 @@ public final class BlockSelectorGUI extends CraftyPagedGUI<CompMaterial> {
 
 	@Override
 	protected ItemStack makeDisplayItem(CompMaterial block) {
-		final QuickItem quickItem= QuickItem.of(block);
+		final QuickItem quickItem = QuickItem.of(block);
 
 		if (Crafty.getBlockDropManager().isTracked(block))
 			quickItem.lore("&c&lAlready Tracked");

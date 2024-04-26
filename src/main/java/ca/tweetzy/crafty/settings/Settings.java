@@ -1,9 +1,9 @@
 package ca.tweetzy.crafty.settings;
 
+import ca.tweetzy.crafty.Crafty;
 import ca.tweetzy.flight.comp.enums.CompMaterial;
 import ca.tweetzy.flight.config.ConfigEntry;
 import ca.tweetzy.flight.settings.FlightSettings;
-import ca.tweetzy.crafty.Crafty;
 
 public final class Settings extends FlightSettings {
 

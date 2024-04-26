@@ -516,7 +516,7 @@ public final class DataManager extends DataManagerAbstract {
 
 	private CustomRecipe extractCustomRecipe(final ResultSet resultSet) throws SQLException {
 		final RecipeType recipeType = Enum.valueOf(RecipeType.class, resultSet.getString("type"));
-		if (recipeType ==RecipeType.CRAFTING)
+		if (recipeType == RecipeType.CRAFTING)
 			return CraftingTableRecipe.decode(resultSet.getString("structure"));
 
 		return CraftyCookingRecipe.decode(recipeType, resultSet.getString("structure"));

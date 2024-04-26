@@ -54,7 +54,8 @@ public final class CraftingTableRecipe extends CustomRecipe {
 				Bukkit.getOnlinePlayers().forEach(player -> {
 					if (!player.hasDiscoveredRecipe(this.getKey()))
 						player.discoverRecipe(this.getKey());
-				});});
+				});
+			});
 
 		} else {
 			final ShapedRecipe shapedRecipe = new ShapedRecipe(this.getKey(), this.result);

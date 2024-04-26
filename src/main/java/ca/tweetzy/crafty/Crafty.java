@@ -19,16 +19,12 @@ import ca.tweetzy.crafty.settings.Settings;
 import ca.tweetzy.crafty.settings.Translations;
 import ca.tweetzy.flight.FlightPlugin;
 import ca.tweetzy.flight.command.CommandManager;
-import ca.tweetzy.flight.comp.enums.CompMaterial;
 import ca.tweetzy.flight.database.DataMigrationManager;
 import ca.tweetzy.flight.database.DatabaseConnector;
 import ca.tweetzy.flight.database.SQLiteConnector;
 import ca.tweetzy.flight.gui.GuiManager;
 import ca.tweetzy.flight.utils.Common;
-import ca.tweetzy.flight.utils.QuickItem;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.*;
 
 public final class Crafty extends FlightPlugin {
 
