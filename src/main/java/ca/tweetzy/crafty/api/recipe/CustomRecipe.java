@@ -42,6 +42,29 @@ public abstract class CustomRecipe implements Storeable<CustomRecipe>, Identifia
 	}
 
 	@Override
+	public void sync(@Nullable Consumer<SynchronizeResult> syncResult) {
+		Crafty.getDataManager().updateCustomRecipe(this, (error, res) -> {
+			if (error == null && res) {
+				if (syncResult != null)
+					syncResult.accept(SynchronizeResult.SUCCESS);
+
+				Crafty.getInstance().getServer().removeRecipe(this.getKey());
+
+				// un-discover recipe
+				Bukkit.getOnlinePlayers().forEach(player -> {
+					if (player.hasDiscoveredRecipe(this.getKey()))
+						player.undiscoverRecipe(this.getKey());
+				});
+
+				// register again
+				register();
+
+			} else if (syncResult != null)
+				syncResult.accept(SynchronizeResult.FAILURE);
+		});
+	}
+
+	@Override
 	public void unStore(@Nullable Consumer<SynchronizeResult> syncResult) {
 		Crafty.getDataManager().deleteCustomRecipe(this, (error, res) -> {
 			if (error == null && res) {
