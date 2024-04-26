@@ -1,6 +1,7 @@
-package ca.tweetzy.crafty.gui.crafting;
+package ca.tweetzy.crafty.gui.recipe;
 
 import ca.tweetzy.crafty.Crafty;
+import ca.tweetzy.crafty.api.sync.SynchronizeResult;
 import ca.tweetzy.crafty.gui.CraftyMainAdminGUI;
 import ca.tweetzy.crafty.gui.template.CraftyBaseGUI;
 import ca.tweetzy.crafty.impl.recipe.CraftingTableRecipe;
@@ -11,25 +12,26 @@ import ca.tweetzy.flight.utils.Common;
 import ca.tweetzy.flight.utils.QuickItem;
 import ca.tweetzy.flight.utils.input.TitleInput;
 import lombok.NonNull;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.RecipeChoice;
-import org.bukkit.inventory.ShapedRecipe;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 public final class CraftingTableRecipeGUI extends CraftyBaseGUI {
 
 	private final Gui parent;
 	private final List<Integer> CRAFTING_SLOTS = List.of(10, 11, 12, 19, 20, 21, 28, 29, 30);
 	private final CraftingTableRecipe recipe;
+	private final boolean isEditing;
 
-	public CraftingTableRecipeGUI(Gui parent, @NonNull Player player, CraftingTableRecipe craftingTableRecipe) {
+	public CraftingTableRecipeGUI(Gui parent, @NonNull Player player, CraftingTableRecipe craftingTableRecipe, boolean isEditing) {
 		super(parent, player, "<GRADIENT:3dcf50>&LCrafty</GRADIENT:26d5ed> &7> &eCrafting Recipe", 5);
 		this.parent = parent;
 		this.recipe = craftingTableRecipe;
+		this.isEditing = isEditing;
 		setAcceptsItems(true);
 		CRAFTING_SLOTS.forEach(this::setUnlocked);
 		setUnlocked(2, 6);
@@ -72,7 +74,12 @@ public final class CraftingTableRecipeGUI extends CraftyBaseGUI {
 	}
 
 	private void drawCreateButton() {
-		setButton(getRows() - 1, 4, QuickItem.of(CompMaterial.LIME_DYE).name("&e&lCREATE").make(), click -> {
+		setButton(getRows() - 1, 4, QuickItem
+				.of(CompMaterial.LIME_DYE)
+				.name("<GRADIENT:3dcf50>&lCreate</GRADIENT:26d5ed>")
+				.lore("&e&lClick &8» &7to create recipe")
+				.make(), click -> {
+
 			updateRecipeObject();
 
 			if (isGridEmpty()) {
@@ -81,6 +88,15 @@ public final class CraftingTableRecipeGUI extends CraftyBaseGUI {
 			}
 
 			if (recipe.getResult() == null || recipe.getResult().getType() == CompMaterial.AIR.parseMaterial()) return;
+
+
+			if (this.isEditing) {
+				this.recipe.sync(result -> {
+					if (result == SynchronizeResult.SUCCESS)
+						click.manager.showGUI(click.player, new CustomRecipeListGUI(new CraftyMainAdminGUI(click.player), click.player));
+				});
+				return;
+			}
 
 			if (Crafty.getRecipeManager().get(this.recipe.getId()) != null) {
 				Common.tell(click.player, "&cPlease update the recipe name, the current one is in use.");
@@ -104,7 +120,7 @@ public final class CraftingTableRecipeGUI extends CraftyBaseGUI {
 	private boolean isGridEmpty() {
 		boolean empty = true;
 
-		for (int slot : CRAFTING_SLOTS){
+		for (int slot : CRAFTING_SLOTS) {
 			final ItemStack slotItem = getItem(slot);
 			if (slotItem != null && slotItem.getType() != CompMaterial.AIR.parseMaterial()) {
 				empty = false;
@@ -176,11 +192,11 @@ public final class CraftingTableRecipeGUI extends CraftyBaseGUI {
 						"",
 						"&7Current Name&F: &e" + this.recipe.getId().toLowerCase(),
 						"",
-						"&e&lClick &8» &7To change name"
+						this.isEditing ? "&cCannot update name once created!" : "&e&lClick &8» &7To change name"
 				)
 				.make(), click -> {
 
-
+			if (this.isEditing) return;
 			updateRecipeObject();
 
 			new TitleInput(Crafty.getInstance(), click.player, "<GRADIENT:3dcf50>&lRecipe Name</GRADIENT:26d5ed>", "&7Enter the &erecipe name &7into chat.") {
@@ -194,13 +210,13 @@ public final class CraftingTableRecipeGUI extends CraftyBaseGUI {
 				public boolean onResult(String string) {
 					string = ChatColor.stripColor(string.toLowerCase());
 
-					if (Crafty.getRecipeManager().get(string)!= null) {
+					if (Crafty.getRecipeManager().get(string) != null) {
 						Common.tell(click.player, "&cThe recipe id&F: &4" + string + " &cis already in use!");
 						return false;
 					}
 
 					CraftingTableRecipeGUI.this.recipe.setId(string);
-					click.manager.showGUI(click.player, new CraftingTableRecipeGUI(CraftingTableRecipeGUI.this.parent, click.player, CraftingTableRecipeGUI.this.recipe));
+					click.manager.showGUI(click.player, new CraftingTableRecipeGUI(CraftingTableRecipeGUI.this.parent, click.player, CraftingTableRecipeGUI.this.recipe, CraftingTableRecipeGUI.this.isEditing));
 					return true;
 				}
 			};
