@@ -186,7 +186,7 @@
                                     </goals>
                                     <configuration>
                                         <tasks>
-                                            <delete>
+                                            <delete failonerror="false">
                                                 <fileset dir="D:\Development\Spigot Servers\Latest Version\plugins\Crafty\locales" includes="*.yml"/>
                                                 <fileset dir="D:\Development\Spigot Servers\Latest Version\plugins\Crafty\" includes="*.yml"/>
                                             </delete>

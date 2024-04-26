@@ -1,13 +1,13 @@
 package ca.tweetzy.crafty.settings;
 
+import ca.tweetzy.crafty.Crafty;
 import ca.tweetzy.flight.comp.enums.CompMaterial;
 import ca.tweetzy.flight.config.ConfigEntry;
 import ca.tweetzy.flight.settings.FlightSettings;
-import ca.tweetzy.crafty.Crafty;
 
 public final class Settings extends FlightSettings {
 
-	public static ConfigEntry PREFIX = create("prefix", "&8[&ECrafty&8]").withComment("The prefix for the plugin");
+	public static ConfigEntry PREFIX = create("prefix", "<GRADIENT:3dcf50>&LCrafty</GRADIENT:26d5ed> &8»").withComment("The prefix for the plugin");
 	public static ConfigEntry LANGUAGE = create("language", "en_us").withComment("The primary language of the plugin");
 
 

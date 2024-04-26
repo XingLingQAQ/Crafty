@@ -1,9 +1,11 @@
-package ca.tweetzy.crafty.gui;
+package ca.tweetzy.crafty.gui.template;
 
 import ca.tweetzy.crafty.settings.Settings;
 import ca.tweetzy.crafty.settings.Translations;
+import ca.tweetzy.flight.comp.enums.CompMaterial;
 import ca.tweetzy.flight.gui.Gui;
 import ca.tweetzy.flight.gui.events.GuiClickEvent;
+import ca.tweetzy.flight.gui.helper.InventoryBorder;
 import ca.tweetzy.flight.gui.template.BaseGUI;
 import ca.tweetzy.flight.settings.TranslationManager;
 import ca.tweetzy.flight.utils.QuickItem;
@@ -117,4 +119,7 @@ public abstract class CraftyPagedGUI<T> extends BaseGUI {
 		return 50;
 	}
 
+	protected void applyThemeBorder() {
+		InventoryBorder.getBorders(getRows()).forEach(slot -> setItem(slot, QuickItem.of(QuickItem.bg(slot % 2 == 0 ? CompMaterial.LIME_STAINED_GLASS_PANE.parseItem() : CompMaterial.CYAN_STAINED_GLASS_PANE.parseItem())).glow(true).make()));
+	}
 }
