@@ -21,7 +21,13 @@ public final class RecipeTypeSelectGUI extends CraftyPagedGUI<RecipeType> {
 	private final Consumer<RecipeType> selected;
 
 	public RecipeTypeSelectGUI(Gui parent, @NonNull Player player, final Consumer<RecipeType> selected) {
-		super(parent, player, "<GRADIENT:3dcf50>&LCrafty</GRADIENT:26d5ed> &7> &eSelect Recipe Type", 6, new ArrayList<>(List.of(RecipeType.values())));
+		super(parent, player, "<GRADIENT:3dcf50>&LCrafty</GRADIENT:26d5ed> &7> &eSelect Recipe Type", 6, new ArrayList<>(List.of(
+				RecipeType.CRAFTING,
+				RecipeType.FURNACE,
+				RecipeType.BLAST_FURNACE,
+				RecipeType.CAMPFIRE,
+				RecipeType.SMOKER
+		)));
 		this.selected = selected;
 		draw();
 	}
@@ -39,13 +45,21 @@ public final class RecipeTypeSelectGUI extends CraftyPagedGUI<RecipeType> {
 
 	@Override
 	protected ItemStack makeDisplayItem(RecipeType recipeType) {
-		return QuickItem.of(switch (recipeType) {
-					case CRAFTING -> CompMaterial.CRAFTING_TABLE;
-					case FURNACE -> CompMaterial.FURNACE;
-					case BLAST_FURNACE -> CompMaterial.BLAST_FURNACE;
-					case CAMPFIRE -> CompMaterial.CAMPFIRE;
-					case SMOKER -> CompMaterial.SMOKER;
-				})
+
+		CompMaterial material = null;
+
+		if (recipeType == RecipeType.CRAFTING)
+			material = CompMaterial.CRAFTING_TABLE;
+		if (recipeType == RecipeType.FURNACE)
+			material = CompMaterial.FURNACE;
+		if (recipeType == RecipeType.BLAST_FURNACE)
+			material = CompMaterial.BLAST_FURNACE;
+		if (recipeType == RecipeType.SMOKER)
+			material = CompMaterial.SMOKER;
+		if (recipeType == RecipeType.CAMPFIRE)
+			material = CompMaterial.CAMPFIRE;
+
+		return QuickItem.of(material)
 				.name("<GRADIENT:3dcf50>&l" + ChatUtil.capitalizeFully(recipeType.name()) + "</GRADIENT:26d5ed>")
 				.lore(
 						"&e&lClick &8» &7To select recipe type"

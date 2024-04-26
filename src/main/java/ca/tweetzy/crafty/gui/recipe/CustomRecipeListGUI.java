@@ -26,20 +26,32 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class CustomRecipeListGUI extends CraftyPagedGUI<CustomRecipe> {
 
 	private final Gui parent;
+	private RecipeType recipeType;
+
+	public CustomRecipeListGUI(Gui parent, @NonNull Player player, RecipeType recipeType) {
+		super(parent, player, "<GRADIENT:3dcf50>&LCrafty</GRADIENT:26d5ed> &7> &eAll Recipes", 6, new ArrayList<>(Crafty.getRecipeManager().getValues()));
+		this.parent = parent;
+		this.recipeType = recipeType;
+		draw();
+	}
 
 	public CustomRecipeListGUI(Gui parent, @NonNull Player player) {
-		super(parent, player, "<GRADIENT:3dcf50>&LCrafty</GRADIENT:26d5ed> &7> &eAll Recipes", 6, Crafty.getRecipeManager().getValues());
-		this.parent = parent;
-		draw();
+		this(parent, player, RecipeType.ALL);
 	}
 
 	@Override
 	protected void prePopulate() {
 		applyThemeBorder();
+
+		this.items = new ArrayList<>(Crafty.getRecipeManager().getValues());
+
+		if (this.recipeType != RecipeType.ALL)
+			this.items = this.items.stream().filter(recipe -> recipe.getRecipeType() == this.recipeType).collect(Collectors.toList());
 	}
 
 	@Override
@@ -66,6 +78,28 @@ public final class CustomRecipeListGUI extends CraftyPagedGUI<CustomRecipe> {
 					default -> throw new IllegalStateException("Unexpected value: " + selected);
 				}, false));
 		})));
+
+		setButton(getRows() - 1, 6, QuickItem.of(switch (this.recipeType) {
+					case ALL -> CompMaterial.REPEATER;
+					case CRAFTING -> CompMaterial.CRAFTING_TABLE;
+					case FURNACE -> CompMaterial.FURNACE;
+					case BLAST_FURNACE -> CompMaterial.BLAST_FURNACE;
+					case CAMPFIRE -> CompMaterial.CAMPFIRE;
+					case SMOKER -> CompMaterial.SMOKER;
+				})
+				.name("<GRADIENT:3dcf50>&lFilter</GRADIENT:26d5ed>")
+				.lore(
+						"&8Used to filter recipes",
+						"",
+						"&7Current Filter&F: &e" + ChatUtil.capitalizeFully(this.recipeType) + " Recipes",
+						"",
+						"&e&lClick &8» &7to navigate filter"
+				)
+				.make(), click -> {
+
+			this.recipeType = this.recipeType.next();
+			draw();
+		});
 
 		applyBackExit();
 	}

@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 public final class CraftyMainAdminGUI extends CraftyBaseGUI {
 
 	public CraftyMainAdminGUI(@NonNull Player player) {
-		super(null, player, "<GRADIENT:3dcf50>&LCrafty</GRADIENT:26d5ed> &fv&7" + Crafty.getInstance().getVersion() + (PremiumStatus.isUnlicensed() ? "&f - &cUnverified" : ""), 5);
+		super(null, player, "<GRADIENT:3dcf50>&LCrafty</GRADIENT:26d5ed> &fv&7" + Crafty.getInstance().getVersion(), 5);
 		draw();
 	}
 

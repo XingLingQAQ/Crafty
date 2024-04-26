@@ -30,14 +30,4 @@ public final class StringUtil {
 
 		return results;
 	}
-
-//	public List<String> boxStrings(List<String> strings) {
-//		String test = "+------+------+------+" +
-//				"+  %s  |  %s  |  %s  |" +
-//				"+------+------+------+" +
-//				"+  %s  |  %s  |  %s  |" +
-//				"+------+------+------+" +
-//				"+  %s  |  %s  |  %s  |" +
-//				"+------+------+------+";
-//	}
 }

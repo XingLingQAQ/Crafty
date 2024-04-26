@@ -18,7 +18,19 @@
 
 package ca.tweetzy.crafty.model;
 
+import ca.tweetzy.crafty.Crafty;
+import ca.tweetzy.flight.utils.Common;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import lombok.experimental.UtilityClass;
+import org.bukkit.Bukkit;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
 
 @UtilityClass
 public final class PremiumStatus {
@@ -41,5 +53,49 @@ public final class PremiumStatus {
 
 	public boolean isSpigot() {
 		return !isUnlicensed() && !isPolymartDownload();
+	}
+
+	public void thank() {
+		if (!isSpigot()) {
+			Common.tell(Bukkit.getConsoleSender(), "&cCannot detect user-id :( Please download from Spigot");
+		}
+
+		Bukkit.getServer().getScheduler().runTaskAsynchronously(Crafty.getInstance(), () -> {
+			try {
+				URL url = new URL("https://api.spigotmc.org/simple/0.2/index.php?action=getAuthor&id=" + USER);
+
+				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+				conn.setRequestMethod("GET");
+				conn.connect();
+
+				//Getting the response code
+				int responseCode = conn.getResponseCode();
+
+				if (responseCode != 200) {
+					return;
+				}
+
+				String inline = "";
+				Scanner scanner = new Scanner(url.openStream());
+
+				//Write all the JSON data into a string using a scanner
+				while (scanner.hasNext()) {
+					inline += scanner.nextLine();
+				}
+
+				//Close the scanner
+				scanner.close();
+
+				//Using the JSON simple library parse the string into a json object
+				final JsonObject object = JsonParser.parseString(inline).getAsJsonObject();
+				final String username = object.get("username").getAsString();
+
+				Common.tell(Bukkit.getConsoleSender(), String.format("&aHi %s&f, &athank you for purchasing the plugin. I appreciate it &6<3", username));
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+
 	}
 }

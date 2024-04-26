@@ -10,6 +10,7 @@ import ca.tweetzy.crafty.database.migrations._4_RecipeMigration;
 import ca.tweetzy.crafty.listener.BlockListener;
 import ca.tweetzy.crafty.listener.EntityListener;
 import ca.tweetzy.crafty.listener.PlayerListener;
+import ca.tweetzy.crafty.model.PremiumStatus;
 import ca.tweetzy.crafty.model.manager.BlockDropManager;
 import ca.tweetzy.crafty.model.manager.CustomRecipeManager;
 import ca.tweetzy.crafty.model.manager.DropManager;
@@ -89,6 +90,8 @@ public final class Crafty extends FlightPlugin {
 
 		// setup commands
 		this.commandManager.registerCommandDynamically(new CraftyCommand()).addSubCommands(new NewCommand());
+
+		PremiumStatus.thank();
 	}
 
 	@Override
