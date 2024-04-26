@@ -12,6 +12,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.*;
 
@@ -35,16 +36,35 @@ public abstract class CraftyCookingRecipe extends CustomRecipe {
 
 	@Override
 	public void register() {
-		CookingRecipe cookingRecipe = null;
 		switch (this.recipeType) {
-			case FURNACE -> cookingRecipe = new FurnaceRecipe(this.getKey(), this.input, new RecipeChoice.ExactChoice(this.result), this.experience, this.cookingTime);
-			case BLAST_FURNACE -> cookingRecipe = new BlastingRecipe(this.getKey(), this.input, new RecipeChoice.ExactChoice(this.result), this.experience, this.cookingTime);
-			case CAMPFIRE -> cookingRecipe = new CampfireRecipe(this.getKey(), this.input, new RecipeChoice.ExactChoice(this.result), this.experience, this.cookingTime);
-			case SMOKER -> cookingRecipe = new SmokingRecipe(this.getKey(), this.input, new RecipeChoice.ExactChoice(this.result), this.experience, this.cookingTime);
+			case FURNACE -> {
+				FurnaceRecipe fr = new FurnaceRecipe(this.getKey(), this.result, new RecipeChoice.ExactChoice(this.input), this.experience, this.cookingTime);
+				addToServer(fr);
+			}
+			case BLAST_FURNACE -> {
+				BlastingRecipe br = new BlastingRecipe(this.getKey(), this.result, new RecipeChoice.ExactChoice(this.input), this.experience, this.cookingTime);
+				addToServer(br);
+			}
+			case CAMPFIRE -> {
+				CampfireRecipe cr = new CampfireRecipe(this.getKey(), this.result, new RecipeChoice.ExactChoice(this.input), this.experience, this.cookingTime);
+				addToServer(cr);
+			}
+			case SMOKER -> {
+				SmokingRecipe sr = new SmokingRecipe(this.getKey(), this.result, new RecipeChoice.ExactChoice(this.input), this.experience, this.cookingTime);
+				addToServer(sr);
+			}
 		}
+	}
 
-		CookingRecipe finalCookingRecipe = cookingRecipe;
-		Crafty.getInstance().getServer().getScheduler().runTask(Crafty.getInstance(), () -> Crafty.getInstance().getServer().addRecipe(finalCookingRecipe));
+	private void addToServer(Recipe recipe) {
+		Crafty.getInstance().getServer().getScheduler().runTask(Crafty.getInstance(), () -> {
+			Crafty.getInstance().getServer().addRecipe(recipe);
+
+			Bukkit.getOnlinePlayers().forEach(player -> {
+				if (!player.hasDiscoveredRecipe(this.getKey()))
+					player.discoverRecipe(this.getKey());
+			});
+		});
 	}
 
 	@Override

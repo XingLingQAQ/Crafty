@@ -12,6 +12,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
@@ -50,7 +51,10 @@ public final class CraftingTableRecipe extends CustomRecipe {
 
 			Crafty.getInstance().getServer().getScheduler().runTask(Crafty.getInstance(), () -> {
 				Crafty.getInstance().getServer().addRecipe(shapelessRecipe);
-			});
+				Bukkit.getOnlinePlayers().forEach(player -> {
+					if (!player.hasDiscoveredRecipe(this.getKey()))
+						player.discoverRecipe(this.getKey());
+				});});
 
 		} else {
 			final ShapedRecipe shapedRecipe = new ShapedRecipe(this.getKey(), this.result);
@@ -61,6 +65,11 @@ public final class CraftingTableRecipe extends CustomRecipe {
 			// register the item
 			Crafty.getInstance().getServer().getScheduler().runTask(Crafty.getInstance(), () -> {
 				Crafty.getInstance().getServer().addRecipe(shapedRecipe);
+
+				Bukkit.getOnlinePlayers().forEach(player -> {
+					if (!player.hasDiscoveredRecipe(this.getKey()))
+						player.discoverRecipe(this.getKey());
+				});
 			});
 		}
 	}
