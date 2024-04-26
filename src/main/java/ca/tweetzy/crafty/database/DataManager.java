@@ -475,6 +475,27 @@ public final class DataManager extends DataManagerAbstract {
 		}));
 	}
 
+	public void updateCustomRecipe(@NonNull final CustomRecipe recipe, final Callback<Boolean> callback) {
+		this.runAsync(() -> this.databaseConnector.connect(connection -> {
+			final String query = "UPDATE " + this.getTablePrefix() + "recipe SET structure = ? WHERE name = ?";
+
+			try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+				preparedStatement.setString(1, recipe.getJSONString());
+				preparedStatement.setString(2, recipe.getId().toLowerCase());
+
+				int result = preparedStatement.executeUpdate();
+
+				if (callback != null)
+					callback.accept(null, result > 0);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				resolveCallback(callback, e);
+			}
+		}));
+	}
+
 	public void getCustomRecipes(@NonNull final Callback<List<CustomRecipe>> callback) {
 		final List<CustomRecipe> customRecipes = new ArrayList<>();
 		this.runAsync(() -> this.databaseConnector.connect(connection -> {
