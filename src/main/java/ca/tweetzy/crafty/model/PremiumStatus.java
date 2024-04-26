@@ -18,6 +18,9 @@
 
 package ca.tweetzy.crafty.model;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public final class PremiumStatus {
 
 	String IS_SONGODA_DOWNLOAD = "%%__SONGODA__%%";
@@ -27,4 +30,8 @@ public final class PremiumStatus {
 	String USERNAME = "%%__USERNAME__%%";
 	String RESOURCE = "%%__RESOURCE__%%";
 	String NONCE = "%%__NONCE__%%";
+
+	public boolean isUnlicensed() {
+		return USER.startsWith("%%__USE") && USER.endsWith("R__%%");
+	}
 }
