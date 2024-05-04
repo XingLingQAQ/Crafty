@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
 import java.util.List;
 
 public final class MobDropListGUI extends CraftyPagedGUI<TrackedMob> {
@@ -53,7 +54,7 @@ public final class MobDropListGUI extends CraftyPagedGUI<TrackedMob> {
 	@Override
 	protected ItemStack makeDisplayItem(TrackedMob mob) {
 		return QuickItem
-				.of(ValidMob.valueOf(mob.getEntity().name()).getHeadTexture())
+				.of(Arrays.stream(ValidMob.values()).filter(type -> type.getEntityType() == mob.getEntity()).findFirst().get().getHeadTexture())
 				.name("<GRADIENT:3dcf50>" + ChatUtil.capitalizeFully(mob.getEntity()) + "</GRADIENT:26d5ed>")
 				.lore(
 						"&7This mob is currently tracked",
