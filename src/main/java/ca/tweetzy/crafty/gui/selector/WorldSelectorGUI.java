@@ -40,7 +40,15 @@ public final class WorldSelectorGUI extends CraftyPagedGUI<World> {
 
 	@Override
 	protected ItemStack makeDisplayItem(World world) {
-		return QuickItem.of("https://textures.minecraft.net/texture/25485031b37f0d8a4f3b7816eb717f03de89a87f6a40602aef52221cdfaf7488")
+
+		String worldTexture = switch (world.getEnvironment()) {
+			case NORMAL -> "https://textures.minecraft.net/texture/25485031b37f0d8a4f3b7816eb717f03de89a87f6a40602aef52221cdfaf7488";
+			case NETHER -> "https://textures.minecraft.net/texture/4d859f7b3cdfdad47182884e127f461fe8f9fc52f7d150427c117079b0924e3";
+			case THE_END -> "https://textures.minecraft.net/texture/cfce059e61850594000ae39778556b7eb0afa928fafd573b0d82314e8bdf49d3";
+			case CUSTOM -> "https://textures.minecraft.net/texture/c8f3d7691d6d5d546c3cf22243b3e8309a107011f2ee93848b1e8c657681a56d";
+		};
+
+		return QuickItem.of(worldTexture)
 				.name("<GRADIENT:3dcf50>&l" + ChatUtil.capitalizeFully(world.getName()) + "</GRADIENT:26d5ed>")
 				.lore(
 						"&e&lClick &8» &7To select world"
