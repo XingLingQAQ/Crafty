@@ -1,5 +1,6 @@
 package ca.tweetzy.crafty.api;
 
+import ca.tweetzy.flight.settings.TranslationManager;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -14,6 +15,7 @@ public enum ValidMob {
 	ALLAY(EntityType.ALLAY, MobBehaviour.PASSIVE, "https://textures.minecraft.net/texture/e50294a1747310f104124c6373cc639b712baa57b7d926297b645188b7bb9ab9"),
 	FROG(EntityType.FROG, MobBehaviour.PASSIVE, "https://textures.minecraft.net/texture/87d62e7d4c313f2138250dbf50fa2f5a7792d9a523b18ebcac1cd73b4b656d74"),
 	TADPOLE(EntityType.TADPOLE, MobBehaviour.PASSIVE, "https://textures.minecraft.net/texture/987035f5352334c2cba6ac4c65c2b9059739d6d0e839c1dd98d75d2e77957847"),
+	ARMADILLO(EntityType.ARMADILLO, MobBehaviour.PASSIVE, "https://textures.minecraft.net/texture/c9c1e96ce985725e22ed6ccf0f4c4810c729a2538b97bda06faeb3b92799c878"),
 
 
 	OCELOT(EntityType.OCELOT, MobBehaviour.PASSIVE, "https://textures.minecraft.net/texture/8c433c1347313b23b67eec92f8807aed2566ec29fd416bdf7a59c22596628355"),
@@ -63,8 +65,11 @@ public enum ValidMob {
 	CAMEL(EntityType.CAMEL, MobBehaviour.NEUTRAL, "https://textures.minecraft.net/texture/3642c9f71131b5df4a8c21c8c6f10684f22abafb8cd68a1d55ac4bf263a53a31"),
 
 	// hostile
-	WARDEN(EntityType.WARDEN, MobBehaviour.HOSTILE, "https://textures.minecraft.net/texture/53c4970510fb0f99be3f0c3d5a5919c6eeef04e433120e20107c66aba675a9b7"),
+	BREEZE(EntityType.BREEZE, MobBehaviour.PASSIVE, "https://textures.minecraft.net/texture/a275728af7e6a29c88125b675a39d88ae9919bb61fdc200337fed6ab0c49d65c"),
+	BOGGED(EntityType.BOGGED, MobBehaviour.PASSIVE, "https://textures.minecraft.net/texture/a3b9003ba2d05562c75119b8a62185c67130e9282f7acbac4bc2824c21eb95d9"),
 
+
+	WARDEN(EntityType.WARDEN, MobBehaviour.HOSTILE, "https://textures.minecraft.net/texture/53c4970510fb0f99be3f0c3d5a5919c6eeef04e433120e20107c66aba675a9b7"),
 	ELDER_GUARDIAN(EntityType.ELDER_GUARDIAN, MobBehaviour.HOSTILE, "https://textures.minecraft.net/texture/4340a268f25fd5cc276ca147a8446b2630a55867a2349f7ca107c26eb58991"),
 	WITHER_SKELETON(EntityType.WITHER_SKELETON, MobBehaviour.HOSTILE, "https://textures.minecraft.net/texture/2d26f2dfdf5dffc16fc80811a843524daf12c4931ec850307775c6d35a5f46c1"),
 	STRAY(EntityType.STRAY, MobBehaviour.HOSTILE, "https://textures.minecraft.net/texture/6572747a639d2240feeae5c81c6874e6ee7547b599e74546490dc75fa2089186"),
