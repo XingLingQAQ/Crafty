@@ -246,7 +246,7 @@ public final class DropEditorGUI extends CraftyBaseGUI {
 
 			if (click.clickType == ClickType.LEFT) {
 				click.manager.showGUI(click.player, new MaterialPickerGUI(this, null, "", (event, selected) -> {
-					this.drop.setItem(selected.parseItem());
+					this.drop.setItem(selected);
 					if (this.trackedBlock != null) {
 						click.manager.showGUI(click.player, new DropEditorGUI(DropEditorGUI.this.parent, click.player, DropEditorGUI.this.drop, DropEditorGUI.this.trackedBlock, DropEditorGUI.this.editorMode));
 					}
