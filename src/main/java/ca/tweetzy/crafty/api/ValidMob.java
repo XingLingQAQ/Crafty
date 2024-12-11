@@ -68,6 +68,7 @@ public enum ValidMob {
 	BREEZE(EntityType.BREEZE, MobBehaviour.PASSIVE, "https://textures.minecraft.net/texture/a275728af7e6a29c88125b675a39d88ae9919bb61fdc200337fed6ab0c49d65c"),
 	BOGGED(EntityType.BOGGED, MobBehaviour.PASSIVE, "https://textures.minecraft.net/texture/a3b9003ba2d05562c75119b8a62185c67130e9282f7acbac4bc2824c21eb95d9"),
 
+	CREAKING(EntityType.CREAKING, MobBehaviour.HOSTILE, "http://textures.minecraft.net/texture/77b5be72769ccff1a6cb77c5848e01d7e5704a3d349c0737ff93cb54d02380ac"),
 
 	WARDEN(EntityType.WARDEN, MobBehaviour.HOSTILE, "https://textures.minecraft.net/texture/53c4970510fb0f99be3f0c3d5a5919c6eeef04e433120e20107c66aba675a9b7"),
 	ELDER_GUARDIAN(EntityType.ELDER_GUARDIAN, MobBehaviour.HOSTILE, "https://textures.minecraft.net/texture/4340a268f25fd5cc276ca147a8446b2630a55867a2349f7ca107c26eb58991"),
